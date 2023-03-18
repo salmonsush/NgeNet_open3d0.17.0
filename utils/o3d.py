@@ -47,7 +47,7 @@ def get_yellow():
 
 
 def npy2feat(npy):
-    feats = o3d.registration.Feature()
+    feats = o3d.pipelines.registration.Feature()
     feats.data = npy.T
     return feats
 
@@ -165,13 +165,13 @@ def batch_neighbors(batch_queries, batch_supports, q_batches, s_batches, radius,
 
 def execute_global_registration(source, target, source_feats, target_feats, voxel_size):
     distance_threshold = voxel_size
-    result = o3d.registration.registration_ransac_based_on_feature_matching(
+    result = o3d.pipelines.registration.registration_ransac_based_on_feature_matching(
         source, target, source_feats, target_feats, distance_threshold,
-        o3d.registration.TransformationEstimationPointToPoint(False), 3, [
-            o3d.registration.CorrespondenceCheckerBasedOnEdgeLength(0.9),
-            o3d.registration.CorrespondenceCheckerBasedOnDistance(
+        o3d.pipelines.registration.TransformationEstimationPointToPoint(False), 3, [
+            o3d.pipelines.registration.CorrespondenceCheckerBasedOnEdgeLength(0.9),
+            o3d.pipelines.registration.CorrespondenceCheckerBasedOnDistance(
                 distance_threshold)
-        ], o3d.registration.RANSACConvergenceCriteria(50000, 1000))
+        ], o3d.pipelines.registration.RANSACConvergenceCriteria(50000, 1000))
     transformation = result.transformation
     estimate = copy.deepcopy(source)
     estimate.transform(transformation)
