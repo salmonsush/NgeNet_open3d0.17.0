@@ -67,7 +67,7 @@ def vis_plys(pcds, need_color=True):
         for i, pcd in enumerate(pcds):
             color = colors[i] if i < 3 else [random.random() for _ in range(3)]
             pcd.paint_uniform_color(color)
-    o3d.visualization.draw_geometries(pcds)
+    o3d.visualization.draw_plotly(pcds)
 
 
 def format_lines(points, lines, colors=None):
@@ -168,11 +168,27 @@ def execute_global_registration(source, target, source_feats, target_feats, voxe
     result = o3d.pipelines.registration.registration_ransac_based_on_feature_matching(
         source, target, source_feats, target_feats, distance_threshold,
         o3d.pipelines.registration.TransformationEstimationPointToPoint(False), 3, [
-            o3d.pipelines.registration.CorrespondenceCheckerBasedOnEdgeLength(0.9),
-            o3d.pipelines.registration.CorrespondenceCheckerBasedOnDistance(
+        o3d.pipelines.registration.CorrespondenceCheckerBasedOnEdgeLength(0.9),
+        o3d.pipelines.registration.CorrespondenceCheckerBasedOnDistance(
                 distance_threshold)
         ], o3d.pipelines.registration.RANSACConvergenceCriteria(50000, 1000))
     transformation = result.transformation
     estimate = copy.deepcopy(source)
     estimate.transform(transformation)
     return transformation, estimate
+
+'''
+TypeError: registration_ransac_based_on_feature_matching(): incompatible function arguments. The following argument types are supported:
+1. (
+    source: open3d.cuda.pybind.geometry.PointCloud,
+    target: open3d.cuda.pybind.geometry.PointCloud, 
+    source_feature: open3d::pipelines::registration::Feature, 
+    target_feature: open3d::pipelines::registration::Feature, 
+    mutual_filter: bool, 
+    max_correspondence_distance: float, 
+    estimation_method: open3d.cuda.pybind.pipelines.registration.TransformationEstimation = TransformationEstimationPointToPoint without scaling., 
+    ransac_n: int = 3, 
+    checkers: List[open3d.cuda.pybind.pipelines.registration.CorrespondenceChecker] = [], 
+    criteria: open3d.cuda.pybind.pipelines.registration.RANSACConvergenceCriteria = RANSACConvergenceCriteria class with max_iteration=100000, and confidence=9.990000e-01)
+-> open3d.cuda.pybind.pipelines.registration.RegistrationResult
+'''
