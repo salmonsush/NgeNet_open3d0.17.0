@@ -166,7 +166,7 @@ def batch_neighbors(batch_queries, batch_supports, q_batches, s_batches, radius,
 def execute_global_registration(source, target, source_feats, target_feats, voxel_size):
     distance_threshold = voxel_size
     result = o3d.pipelines.registration.registration_ransac_based_on_feature_matching(
-        source, target, source_feats, target_feats, distance_threshold,
+        source, target, source_feats, target_feats, True, distance_threshold,
         o3d.pipelines.registration.TransformationEstimationPointToPoint(False), 3, [
         o3d.pipelines.registration.CorrespondenceCheckerBasedOnEdgeLength(0.9),
         o3d.pipelines.registration.CorrespondenceCheckerBasedOnDistance(
