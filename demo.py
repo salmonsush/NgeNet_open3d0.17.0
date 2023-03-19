@@ -191,6 +191,7 @@ if __name__ == '__main__':
     # vis
     if not args.no_vis:
         # voxelization for fluent visualization 
+        print("Voxelization for visualization"")
         source = voxel_ds(source, args.voxel_size)
         target = voxel_ds(target, args.voxel_size)
         estimate = copy.deepcopy(source).transform(T)
